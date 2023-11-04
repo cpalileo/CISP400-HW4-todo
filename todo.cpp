@@ -12,7 +12,7 @@ public:
     string description;
     string dateAdded;
 
-    TodoItem() : description("Dummy TODO"), dateAdded(getCurrentDate()) {}
+    TodoItem() : description("Dummy Data"), dateAdded(getCurrentDate()) {}
     TodoItem(const string &desc) : description(desc), dateAdded(getCurrentDate()) {}
     TodoItem(const TodoItem &other) : description(other.description), dateAdded(other.dateAdded) {}
 
@@ -43,8 +43,8 @@ public:
         return string(buffer);
     }
 
-    void componentTest() const {
-        cout << "Component Test for TodoItem: " << *this << endl;
+    void componentTest() {
+        cout << "Current Tasks (Component Test)" << *this << endl;
     }
 };
 
@@ -79,6 +79,9 @@ public:
     }
 
     void removeItem(int index) {
+        // Adjust index to match array.
+        index -= 1;
+
         if (index < 0 || index >= count) {
             cout << "Invalid index. No item removed." << endl;
             return;
@@ -108,11 +111,11 @@ public:
         file.close();
     }
 
-    void displayAll() const {
-        for (int i = 0; i < count; ++i) {
-            cout << i << ". " << items[i] << endl;
-        }
+void displayAll() const {
+    for (int i = 0; i < count; ++i) {
+        cout << (i + 1) << ". " << items[i] << endl;
     }
+}
 
     void componentTest() const {
         cout << "Component Test for TodoList: " << endl;
