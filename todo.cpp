@@ -121,13 +121,43 @@ public:
 };
 
 void printGreeting() {
-    cout << "Welcome to the Todo List Manager" << endl;
-    cout << "Current Date: " << TodoItem::getCurrentDate() << endl;
+    cout << "====================-             -====================" << endl;
+    cout << "===============.                       .===============" << endl;
+    cout << "============.           :+****-           .============" << endl;
+    cout << "==========        #@@@@@@@@@@@@@@@@@%        ==========" << endl;
+    cout << "========       %@@@@@@@@@@@@@@@@@@@@@@@%       ========" << endl;
+    cout << "======      +@@@@@@@@@@@%@#*#@@@@@@@@@@@@@*      ======" << endl;
+    cout << "=====     :@@@@@@@@#               #@@@@@@@@+     =====" << endl;
+    cout << "====     @@@@@@@#    :@@@@@@@@@@@-    #@@@@@%@     ====" << endl;
+    cout << "===     @+--=@@   *@@@@@@@@@@@@@@@@@%   @@+--=@     ===" << endl;
+    cout << "==     @-----.  -@@@@@@@@@@@@@@@@@@@@@#  .-----@     ==" << endl;
+    cout << "=     @@#=--   :--=#@@@@@@@@@@@@@@@#+---   --+#@@     =" << endl;
+    cout << "=    *@@@@@:  -----------=====-----------  :@@@@@%    =" << endl;
+    cout << "     @@@@@#  @@%-----------------------@@@  %@@@@@     " << endl;
+    cout << "    :@@@@@   @@@@@------------------=@@@@@   @@@@@=    " << endl;
+    cout << "    =@@@@@   @@@@@@#---------------@@@@@@@-  @@@@@*    " << endl;
+    cout << "    =@@@@@  .@@@@@@@@------------=@@@@@@@@-  @@@@@*    " << endl;
+    cout << "    -@@@@@   @@@@@@@@@=---------+@@@@@@@@@   @@@@@=    " << endl;
+    cout << "     @@@@@#  @@@@@@@@@@--------=@@@@@@@@@@  %@@@@@     " << endl;
+    cout << "=    %@@@@@   @@@@@@@@@@-------@@@@@@@@@@   @@@@@@    =" << endl;
+    cout << "=     @@@@@@   @@@@@@@@@+-----*@@@@@@@@@   @@@@@@     =" << endl;
+    cout << "==    .@@@@@@.  *@@@@@@@@-----@@@@@@@@%  :@@@@@@-    ==" << endl;
+    cout << "===    =@@@@@@@   @@@@@@@=---=@@@@@@@   @@@@@@@*    ===" << endl;
+    cout << "====     @@@@@@@*    =@@@=---=@@@+    #@@@@@@@.    ====" << endl;
+    cout << "=====     #@@@@@@@@*               *@@@@@@@@%     =====" << endl;
+    cout << "======      %@@@@@@@@@@@@-...-@@@@@@@@@@@@%      ======" << endl;
+    cout << "========      +@@@@@@@@@@-----@@@@@@@@@@*      ========" << endl;
+    cout << "==========       =@@@@@@=-----=@@@@@@+       ==========" << endl;
+    cout << "============:         -%@@@@@@@%=         :============" << endl;
+    cout << "===============:                       :===============" << endl;
+    cout << "====================:             :====================" << endl;
+    cout << "                    Taskmaster Pro\n" << endl;
+    cout << "                Current Date: " << TodoItem::getCurrentDate() << endl;
 }
-
+  
 char getUserInput() {
     char input;
-    cout << "Enter command (+ add, - remove, ? display, q quit): ";
+    cout << "\nEnter command (+ add, - remove, ? display, q quit): ";
     cin >> input;
     return input;
 }
@@ -143,7 +173,7 @@ int main() {
     while ((command = getUserInput()) != 'q') {
         switch (command) {
             case '+': {
-                cout << "Enter a description for the new task: ";
+                cout << "\nEnter a description for the new task: ";
                 cin.ignore();
                 TodoItem newItem;
                 cin >> newItem;
@@ -152,7 +182,7 @@ int main() {
             }
             case '-': {
                 int index;
-                cout << "Enter the index of the task to remove: ";
+                cout << "\nEnter the index of the task to remove: ";
                 cin >> index;
                 list.removeItem(index);
                 break;
