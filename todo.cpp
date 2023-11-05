@@ -97,7 +97,6 @@ private:
 
 public:
     // Constructor initializes an array with capacity of 1
-    //Specification C4 - TODO array
     TodoList() : items(new TodoItem[1]), capacity(1), count(0) {}
 
     // Destructor to deallocate dynamic array
@@ -106,7 +105,6 @@ public:
     }
 
     // Adds a new item to list
-    // Specification B1 - + Symbol
     void addItem(const TodoItem &item) {
         if (count == capacity) {
             expandCapacity();
@@ -115,7 +113,6 @@ public:
     }
 
     // Removes an item from list by index
-    // Specification B3 - - symbol
     void removeItem(int index) {
         index -= 1; // Adjust for 0-based indexing
 
@@ -142,7 +139,6 @@ public:
     }
 
     // Loads a list from a file
-    // Specification B4 - Persistence
     void loadFromFile() {
         ifstream file(FILENAME);
         string line;
@@ -153,7 +149,6 @@ public:
     }
 
     // Displays all items in list with numbers starting from 1
-    // Specification B2 - ? Symbol
     void displayAll() const {
         for (int i = 0; i < count; ++i) {
             cout << (i + 1) << ". " << items[i] << endl;
@@ -161,7 +156,6 @@ public:
     }
 
     // Method for testing components
-    // Specification C3 - Test TODO’s
     void componentTest() const {
         cout << "Component Test for Todo List: " << endl;
         displayAll();
@@ -179,7 +173,6 @@ public:
 };
 
 // ASCII Arty Generated at https://asciiart.club/
-// Specification A3 - System Date.
 void printGreeting() {
 cout << "▓▓▓▓▓▓▓▓▓▓▓▓▓▀╙ `      ` ╙▀▀▓▓▓▓▓▓▓▓▓▓▓▓/========================================================\\" << endl;
 cout << "▓▓▓▓▓▓▓▓▓▀`   _,▄▄▄▄▄▄▄▄╓_   `╙▀▓▓▓▓▓▓▓▓|| _____         _                        _             ||" << endl;
@@ -202,9 +195,6 @@ cout << "Current Date: " << TodoItem::getCurrentDate() << "\n"<< endl;
 }
   
 // Function to get user input for main menu
-// Specification B1 - + Symbol
-// Specification B3 - - symbol
-// Specification B2 - ? Symbol
 char getUserInput() {
     char input;
     cout << "\nEnter command (+) add, (-) remove, (?) display, (q) quit: ";
@@ -218,11 +208,8 @@ int main() {
     printGreeting();
 
     // Create and load the todo list from file
-    //Specification C4 - TODO array
-    // Specification B4 - Persistence
     TodoList list;
     list.loadFromFile();
-    // Specification C3 - Test TODO’s
     list.componentTest();
 
     char command;
@@ -262,7 +249,6 @@ int main() {
     }
 
     // Save list to the file before quitting
-    // Specification B4 - Persistence
     list.saveToFile();
     return 0;
 }
@@ -270,7 +256,6 @@ int main() {
 // Utility function to get input for a new task
 string getTaskDescription() {
     string description;
-    // Specification B1 - + Symbol
     cout << "\nEnter a description for the new task: ";
     cin.ignore(); // Clear input buffer
     getline(cin, description);
@@ -284,7 +269,6 @@ string getTaskDescription() {
 // Utility function to get index for task removal
 int getTaskIndexToRemove(int count) {
     int index;
-    // Specification B3 - - symbol
     cout << "\nEnter the index of the task to remove: ";
     while(!(cin >> index) || index < 1 || index > count) {
         cout << "Please enter a number between 1 and " << count << ": ";
