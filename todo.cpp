@@ -1,3 +1,12 @@
+/********************************************************
+* Author:      Christopher Palileo                      *
+* Professor:   Caleb Fowler                             *
+* Class:       CISP 400                                 *
+* Assignment:  Homework 4: ToDo List (todo)             *
+* Date:        11/05/2023                               *
+* Description: A Todo list program (Nuff Said!)         *
+********************************************************/
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -14,15 +23,19 @@ public:
     string dateAdded;
 
     // Default constructor with dummy data
+    // Specification A4 - Overload Constructor
     TodoItem() : description("Dummy Data"), dateAdded(getCurrentDate()) {}
 
     // Constructor with description parameter
+    // Specification A4 - Overload Constructor
     TodoItem(const string &desc) : description(desc), dateAdded(getCurrentDate()) {}
 
     // Copy constructor
+    // Specification A1 - Overload Copy Constructor
     TodoItem(const TodoItem &otherItem) : description(otherItem.description), dateAdded(otherItem.dateAdded) {}
 
     // Assignment operator overloading
+    // Specification A2 - Overload Assignment Operator
     TodoItem& operator=(const TodoItem &otherItem) {
         if (this != &otherItem) {
             description = otherItem.description;
@@ -32,12 +45,14 @@ public:
     }
 
     // Output stream operator overloading for easy printing
+    // Specification C1 - Overload «
     friend ostream& operator<<(ostream &output, const TodoItem &item) {
         output << item.dateAdded << ": " << item.description;
         return output;
     }
 
     // Input stream operator overloading for easy input
+    //Specification C2 - Overload »
     friend istream& operator>>(istream &input, TodoItem &item) {
         getline(input, item.description);
         item.dateAdded = getCurrentDate();
@@ -45,6 +60,7 @@ public:
     }
 
     // Static method to get current date as a string
+    // Specification A3 - System Date.
     static string getCurrentDate() {
         time_t now = time(0);
         tm *localTime = localtime(&now);
@@ -54,6 +70,7 @@ public:
     }
 
     // Method for testing components
+    // Specification C3 - Test TODO’s
     void componentTest() {
         cout << "Current Tasks (Component Test)" << *this << endl;
     }
@@ -67,6 +84,7 @@ private:
     int count;        // Number of tasks in the array
 
     // Private method to double the capacity of array when full
+    //Specification C4 - TODO array
     void expandCapacity() {
         capacity *= 2;
         TodoItem* newList = new TodoItem[capacity];
@@ -79,6 +97,7 @@ private:
 
 public:
     // Constructor initializes an array with capacity of 1
+    //Specification C4 - TODO array
     TodoList() : items(new TodoItem[1]), capacity(1), count(0) {}
 
     // Destructor to deallocate dynamic array
@@ -87,6 +106,7 @@ public:
     }
 
     // Adds a new item to list
+    // Specification B1 - + Symbol
     void addItem(const TodoItem &item) {
         if (count == capacity) {
             expandCapacity();
@@ -95,6 +115,7 @@ public:
     }
 
     // Removes an item from list by index
+    // Specification B3 - - symbol
     void removeItem(int index) {
         index -= 1; // Adjust for 0-based indexing
 
@@ -109,6 +130,7 @@ public:
     }
 
     // Saves current list to a file
+    // Specification B4 - Persistence
     void saveToFile() const {
         ofstream file(FILENAME);
         if (file.is_open()) {
@@ -120,6 +142,7 @@ public:
     }
 
     // Loads a list from a file
+    // Specification B4 - Persistence
     void loadFromFile() {
         ifstream file(FILENAME);
         string line;
@@ -130,6 +153,7 @@ public:
     }
 
     // Displays all items in list with numbers starting from 1
+    // Specification B2 - ? Symbol
     void displayAll() const {
         for (int i = 0; i < count; ++i) {
             cout << (i + 1) << ". " << items[i] << endl;
@@ -137,6 +161,7 @@ public:
     }
 
     // Method for testing components
+    // Specification C3 - Test TODO’s
     void componentTest() const {
         cout << "Component Test for Todo List: " << endl;
         displayAll();
@@ -154,6 +179,7 @@ public:
 };
 
 // ASCII Arty Generated at https://asciiart.club/
+// Specification A3 - System Date.
 void printGreeting() {
 cout << "▓▓▓▓▓▓▓▓▓▓▓▓▓▀╙ `      ` ╙▀▀▓▓▓▓▓▓▓▓▓▓▓▓/========================================================\\" << endl;
 cout << "▓▓▓▓▓▓▓▓▓▀`   _,▄▄▄▄▄▄▄▄╓_   `╙▀▓▓▓▓▓▓▓▓|| _____         _                        _             ||" << endl;
@@ -171,10 +197,14 @@ cout << "▓▌  ╙████▓_╙██████Ñ╬╬╬████
 cout << "▓▓▓_  ▓████▓▄ ▀▀███╬╬╣███▀┘▄▓█████Γ  Æ▓▓||| |  | | | (_) |                                      ||" << endl;
 cout << "▓▓▓▓▄  ╙▓█████▓▌▄▄▄╓╓╓▄▄φ▓██████▀  ╓▓▓▓▓||\\_|  |_|  \\___/                                       ||" << endl;
 cout << "▓▓▓▓▓▓▄  `▀▓███████╬╬╬███████▀   ╓▓▓▓▓▓▓\\========================================================/" << endl;
+// Displays the current system date
 cout << "Current Date: " << TodoItem::getCurrentDate() << "\n"<< endl;
 }
   
 // Function to get user input for main menu
+// Specification B1 - + Symbol
+// Specification B3 - - symbol
+// Specification B2 - ? Symbol
 char getUserInput() {
     char input;
     cout << "\nEnter command (+) add, (-) remove, (?) display, (q) quit: ";
@@ -182,20 +212,17 @@ char getUserInput() {
     return input;
 }
 
-
-// Function Prototypes
-string getTaskDescription();
-int getTaskIndexToRemove(int);
-
-
 // Main function
 int main() {
     // Print the greeting message
     printGreeting();
 
     // Create and load the todo list from file
+    //Specification C4 - TODO array
+    // Specification B4 - Persistence
     TodoList list;
     list.loadFromFile();
+    // Specification C3 - Test TODO’s
     list.componentTest();
 
     char command;
@@ -203,6 +230,8 @@ int main() {
     while ((command = getUserInput()) != 'q') {
         switch (command) {
             case '+': {
+                // Add new item to list
+                // Specification B1 - + Symbol
                 string description = getTaskDescription();
                 TodoItem newItem(description);
                 list.addItem(newItem);
@@ -210,16 +239,12 @@ int main() {
             }
 
             case '-': {
+                // Remove an item from list
+                // Specification B3 - - symbol
                 if (list.isEmpty()) {
                     cout << "The list is empty. No items to remove." << endl;
                 } else {
-                    int index;
-                    cout << "\nEnter the index of the task to remove: ";
-                    while(!(cin >> index) || index < 1 || index > list.getCount()) {
-                        cout << "Please enter a number between 1 and " << list.getCount() << ": ";
-                        cin.clear(); // Clear error flag
-                        while (cin.get() != '\n'); // Clear out any additional input until the end of line
-                    }
+                    int index = getTaskIndexToRemove(list.getCount());
                     list.removeItem(index); // Pass the 1-based index directly
                 }
                 break;
@@ -227,6 +252,7 @@ int main() {
             
             case '?': {
                 // Display all items in list
+                // Specification B2 - ? Symbol
                 list.displayAll();
                 break;
             }
@@ -236,16 +262,17 @@ int main() {
     }
 
     // Save list to the file before quitting
+    // Specification B4 - Persistence
     list.saveToFile();
     return 0;
 }
 
-
 // Utility function to get input for a new task
 string getTaskDescription() {
     string description;
+    // Specification B1 - + Symbol
     cout << "\nEnter a description for the new task: ";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear input buffer
+    cin.ignore(); // Clear input buffer
     getline(cin, description);
     while(description.empty()) {
         cout << "Cannot be empty. Please enter again: ";
@@ -257,11 +284,12 @@ string getTaskDescription() {
 // Utility function to get index for task removal
 int getTaskIndexToRemove(int count) {
     int index;
+    // Specification B3 - - symbol
     cout << "\nEnter the index of the task to remove: ";
     while(!(cin >> index) || index < 1 || index > count) {
         cout << "Please enter a number between 1 and " << count << ": ";
         cin.clear(); // Clear error flag
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear input buffer
+        cin.ignore(); // Clear input buffer
     }
     return index;
 }
