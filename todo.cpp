@@ -172,35 +172,13 @@ public:
     }
 };
 
-// ASCII Arty Generated at https://asciiart.club/
-void printGreeting() {
-cout << "▓▓▓▓▓▓▓▓▓▓▓▓▓▀╙ `      ` ╙▀▀▓▓▓▓▓▓▓▓▓▓▓▓/========================================================\\" << endl;
-cout << "▓▓▓▓▓▓▓▓▓▀`   _,▄▄▄▄▄▄▄▄╓_   `╙▀▓▓▓▓▓▓▓▓|| _____         _                        _             ||" << endl;
-cout << "▓▓▓▓▓▓▀   ,▄▓██████████████▓▄▄   ╙▓▓▓▓▓▓|||_   _|       | |                      | |            ||" << endl;
-cout << "▓▓▓▓▀   ▄▓██████▀▀▀╙╙▀▀▀▓██████▌_  ╙▓▓▓▓||  | | __ _ ___| | ___ __ ___   __ _ ___| |_ ___ _ __  ||" << endl;
-cout << "▓▓▓`  ▄█████▀└,▄████████▄▄└▀█████▌   ▓▓▓||  | |/ _` / __| |/ / '_ ` _ \\ / _` / __| __/ _ \\ '__| ||" << endl;
-cout << "▓▓   ██╬╬╬▀ ▄███████████████_╙╬╬╬╬█_  ╫▓||  | | (_| \\__ \\   <| | | | | | (_| \\__ \\ ||  __/ |    ||" << endl;
-cout << "▓   ▓███╬ ╓▓╬╬████████████╬╬╬▄ ╠████_  ▓||  \\_/\\__,_|___/_|\\_\\_| |_| |_|\\__,_|___/\\__\\___|_|    ||" << endl;
-cout << "▌  ║████ ▐██╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬██▌ ████▌  ▌||                                                      ||" << endl;
-cout << "▌  ▓███▌ █████╬╬╬╬╬╬╬╬╬╬╬╬█████ ╟████  ▌||                                                      ||" << endl;
-cout << "▌  ████▌ ███████╬╬╬╬╬╬╬╬███████ ▐████  ▌||______                                                ||" << endl;
-cout << "▒  ╟████ ╟███████╬╬╬╬╬╬████████ ▓████  ▐||| ___ \\                                               ||" << endl;
-cout << "▓   ████▌ ▀███████╬╬╬╬████████ ╫████M  ▓||| |_/ / __ ___                                        ||" << endl;
-cout << "▓▌  ╙████▓_╙██████Ñ╬╬╬██████▀,▓████Ñ  ╫▓|||  __/ '__/ _ \\                                       ||" << endl;
-cout << "▓▓▓_  ▓████▓▄ ▀▀███╬╬╣███▀┘▄▓█████Γ  Æ▓▓||| |  | | | (_) |                                      ||" << endl;
-cout << "▓▓▓▓▄  ╙▓█████▓▌▄▄▄╓╓╓▄▄φ▓██████▀  ╓▓▓▓▓||\\_|  |_|  \\___/                                       ||" << endl;
-cout << "▓▓▓▓▓▓▄  `▀▓███████╬╬╬███████▀   ╓▓▓▓▓▓▓\\========================================================/" << endl;
-// Displays the current system date
-cout << "Current Date: " << TodoItem::getCurrentDate() << "\n"<< endl;
-}
-  
-// Function to get user input for main menu
-char getUserInput() {
-    char input;
-    cout << "\nEnter command (+) add, (-) remove, (?) display, (q) quit: ";
-    cin >> input;
-    return input;
-}
+
+// Function prototypes
+void printGreeting();
+char getUserInput();
+string getTaskDescription();
+int getTaskIndexToRemove(int count);
+
 
 // Main function
 int main() {
@@ -240,7 +218,11 @@ int main() {
             case '?': {
                 // Display all items in list
                 // Specification B2 - ? Symbol
-                list.displayAll();
+                if (list.isEmpty()) {
+                    cout << "The list is currently empty." << endl;
+                } else {
+                    list.displayAll();
+                }
                 break;
             }
             default:
@@ -252,6 +234,38 @@ int main() {
     list.saveToFile();
     return 0;
 }
+
+
+// ASCII Arty Generated at https://asciiart.club/
+void printGreeting() {
+cout << "\n▓▓▓▓▓▓▓▓▓▓▓▓▓▀╙ `      ` ╙▀▀▓▓▓▓▓▓▓▓▓▓▓▓/========================================================\\" << endl;
+cout << "▓▓▓▓▓▓▓▓▓▀`   _,▄▄▄▄▄▄▄▄╓_   `╙▀▓▓▓▓▓▓▓▓|| _____         _                        _             ||" << endl;
+cout << "▓▓▓▓▓▓▀   ,▄▓██████████████▓▄▄   ╙▓▓▓▓▓▓|||_   _|       | |                      | |            ||" << endl;
+cout << "▓▓▓▓▀   ▄▓██████▀▀▀╙╙▀▀▀▓██████▌_  ╙▓▓▓▓||  | | __ _ ___| | ___ __ ___   __ _ ___| |_ ___ _ __  ||" << endl;
+cout << "▓▓▓`  ▄█████▀└,▄████████▄▄└▀█████▌   ▓▓▓||  | |/ _` / __| |/ / '_ ` _ \\ / _` / __| __/ _ \\ '__| ||" << endl;
+cout << "▓▓   ██╬╬╬▀ ▄███████████████_╙╬╬╬╬█_  ╫▓||  | | (_| \\__ \\   <| | | | | | (_| \\__ \\ ||  __/ |    ||" << endl;
+cout << "▓   ▓███╬ ╓▓╬╬████████████╬╬╬▄ ╠████_  ▓||  \\_/\\__,_|___/_|\\_\\_| |_| |_|\\__,_|___/\\__\\___|_|    ||" << endl;
+cout << "▌  ║████ ▐██╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬██▌ ████▌  ▌||                                                      ||" << endl;
+cout << "▌  ▓███▌ █████╬╬╬╬╬╬╬╬╬╬╬╬█████ ╟████  ▌||                                                      ||" << endl;
+cout << "▌  ████▌ ███████╬╬╬╬╬╬╬╬███████ ▐████  ▌||______                                                ||" << endl;
+cout << "▒  ╟████ ╟███████╬╬╬╬╬╬████████ ▓████  ▐||| ___ \\                                               ||" << endl;
+cout << "▓   ████▌ ▀███████╬╬╬╬████████ ╫████M  ▓||| |_/ / __ ___                                        ||" << endl;
+cout << "▓▌  ╙████▓_╙██████Ñ╬╬╬██████▀,▓████Ñ  ╫▓|||  __/ '__/ _ \\                                       ||" << endl;
+cout << "▓▓▓_  ▓████▓▄ ▀▀███╬╬╣███▀┘▄▓█████Γ  Æ▓▓||| |  | | | (_) |                                      ||" << endl;
+cout << "▓▓▓▓▄  ╙▓█████▓▌▄▄▄╓╓╓▄▄φ▓██████▀  ╓▓▓▓▓||\\_|  |_|  \\___/                                       ||" << endl;
+cout << "▓▓▓▓▓▓▄  `▀▓███████╬╬╬███████▀   ╓▓▓▓▓▓▓\\========================================================/" << endl;
+// Displays the current system date
+cout << "Current Date: " << TodoItem::getCurrentDate() << "\n"<< endl;
+}
+  
+// Function to get user input for main menu
+char getUserInput() {
+    char input;
+    cout << "\nEnter command (+) add, (-) remove, (?) display, (q) quit: ";
+    cin >> input;
+    return input;
+}
+
 
 // Utility function to get input for a new task
 string getTaskDescription() {
