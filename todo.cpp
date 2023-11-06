@@ -14,29 +14,29 @@
 
 using namespace std;
 
-const string FILENAME = "todo_list.txt";
+string FILENAME = "todo_list.txt";
 
-// TodoItem represents a single task with a description and date
-class TodoItem {
+// TaskItem represents a single task with a description and date
+class TaskItem {
 public:
     string description;
     string dateAdded;
 
-    // Default constructor with dummy data
+    // Default constructor: dummy data
     // Specification A4 - Overload Constructor
-    TodoItem() : description("Dummy Data"), dateAdded(getCurrentDate()) {}
+    TaskItem() : description("Dummy Data"), dateAdded(getCurrentDate()) {}
 
     // Constructor with description parameter
     // Specification A4 - Overload Constructor
-    TodoItem(const string &desc) : description(desc), dateAdded(getCurrentDate()) {}
+    TaskItem(string &desc) : description(desc), dateAdded(getCurrentDate()) {}
 
     // Copy constructor
     // Specification A1 - Overload Copy Constructor
-    TodoItem(const TodoItem &otherItem) : description(otherItem.description), dateAdded(otherItem.dateAdded) {}
+    TaskItem(TaskItem &otherItem) : description(otherItem.description), dateAdded(otherItem.dateAdded) {}
 
     // Assignment operator overloading
     // Specification A2 - Overload Assignment Operator
-    TodoItem& operator=(const TodoItem &otherItem) {
+    TaskItem& operator=(const TaskItem &otherItem) {
         if (this != &otherItem) {
             description = otherItem.description;
             dateAdded = otherItem.dateAdded;
@@ -46,16 +46,16 @@ public:
 
     // Output stream operator overloading for easy printing
     // Specification C1 - Overload «
-    friend ostream& operator<<(ostream &output, const TodoItem &item) {
-        output << item.dateAdded << ": " << item.description;
+    friend ostream& operator<<(ostream &output, TaskItem &todo) {
+        output << todo.dateAdded << ": " << todo.description;
         return output;
     }
 
     // Input stream operator overloading for easy input
     //Specification C2 - Overload »
-    friend istream& operator>>(istream &input, TodoItem &item) {
-        getline(input, item.description);
-        item.dateAdded = getCurrentDate();
+    friend istream& operator>>(istream &input, TaskItem &todo) {
+        getline(input, todo.description);
+        todo.dateAdded = getCurrentDate();
         return input;
     }
 
@@ -69,17 +69,18 @@ public:
         return string(buffer);
     }
 
+
     // Method for testing components
     // Specification C3 - Test TODO’s
-    void componentTest() {
+    void runTests() {
         cout << "Current Tasks (Component Test)" << *this << endl;
     }
 };
 
-// TodoList represents a list of TodoItem objects
+// TodoList represents a list of TaskItem objects
 class TodoList {
 private:
-    TodoItem* items;  // Array to store tasks
+    TaskItem* items;  // Array to store tasks
     int capacity;     // Current capacity of the array
     int count;        // Number of tasks in the array
 
@@ -87,7 +88,7 @@ private:
     //Specification C4 - TODO array
     void expandCapacity() {
         capacity *= 2;
-        TodoItem* newList = new TodoItem[capacity];
+        TaskItem* newList = new TaskItem[capacity];
         for (int i = 0; i < count; ++i) {
             newList[i] = items[i];
         }
@@ -97,7 +98,7 @@ private:
 
 public:
     // Constructor initializes an array with capacity of 1
-    TodoList() : items(new TodoItem[1]), capacity(1), count(0) {}
+    TodoList() : items(new TaskItem[1]), capacity(1), count(0) {}
 
     // Destructor to deallocate dynamic array
     ~TodoList() {
@@ -105,11 +106,11 @@ public:
     }
 
     // Adds a new item to list
-    void addItem(const TodoItem &item) {
+    void addItem(const TaskItem &todo) {
         if (count == capacity) {
             expandCapacity();
         }
-        items[count++] = item;
+        items[count++] = todo;
     }
 
     // Removes an item from list by index
@@ -128,7 +129,7 @@ public:
 
     // Saves current list to a file
     // Specification B4 - Persistence
-    void saveToFile() const {
+    void saveToFile() {
         ofstream file(FILENAME);
         if (file.is_open()) {
             for (int i = 0; i < count; ++i) {
@@ -143,31 +144,35 @@ public:
         ifstream file(FILENAME);
         string line;
         while (getline(file, line)) {
-            addItem(TodoItem(line));
+            addItem(TaskItem(line));
         }
         file.close();
     }
 
     // Displays all items in list with numbers starting from 1
     void displayAll() const {
-        for (int i = 0; i < count; ++i) {
-            cout << (i + 1) << ". " << items[i] << endl;
+        if (count == 0) {
+            cout << "The list is currently empty." << endl;
+        } else {
+            for (int i = 0; i < count; ++i) {
+                cout << (i + 1) << ". " << items[i] << endl;
+            }
         }
     }
 
     // Method for testing components
-    void componentTest() const {
+    void runTests() {
         cout << "Component Test for Todo List: " << endl;
         displayAll();
     }
 
     // Checks if input is empty
-    bool isEmpty() const {
+    bool isEmpty() {
         return count == 0;
     }
 
     // Returns number of todo items in the list
-    int getCount() const {
+    int getCount() {
         return count;
     }
 };
@@ -188,7 +193,7 @@ int main() {
     // Create and load the todo list from file
     TodoList list;
     list.loadFromFile();
-    list.componentTest();
+    list.runTests();
 
     char command;
     // Main loop for user commands
@@ -198,7 +203,7 @@ int main() {
                 // Add new item to list
                 // Specification B1 - + Symbol
                 string description = getTaskDescription();
-                TodoItem newItem(description);
+                TaskItem newItem(description);
                 list.addItem(newItem);
                 break;
             }
@@ -216,8 +221,6 @@ int main() {
             }
             
             case '?': {
-                // Display all items in list
-                // Specification B2 - ? Symbol
                 if (list.isEmpty()) {
                     cout << "The list is currently empty." << endl;
                 } else {
@@ -225,6 +228,7 @@ int main() {
                 }
                 break;
             }
+
             default:
                 cout << "Invalid command." << endl;
         }
@@ -238,24 +242,24 @@ int main() {
 
 // ASCII Arty Generated at https://asciiart.club/
 void printGreeting() {
-cout << "\n▓▓▓▓▓▓▓▓▓▓▓▓▓▀╙ `      ` ╙▀▀▓▓▓▓▓▓▓▓▓▓▓▓/========================================================\\" << endl;
-cout << "▓▓▓▓▓▓▓▓▓▀`   _,▄▄▄▄▄▄▄▄╓_   `╙▀▓▓▓▓▓▓▓▓|| _____         _                        _             ||" << endl;
-cout << "▓▓▓▓▓▓▀   ,▄▓██████████████▓▄▄   ╙▓▓▓▓▓▓|||_   _|       | |                      | |            ||" << endl;
-cout << "▓▓▓▓▀   ▄▓██████▀▀▀╙╙▀▀▀▓██████▌_  ╙▓▓▓▓||  | | __ _ ___| | ___ __ ___   __ _ ___| |_ ___ _ __  ||" << endl;
-cout << "▓▓▓`  ▄█████▀└,▄████████▄▄└▀█████▌   ▓▓▓||  | |/ _` / __| |/ / '_ ` _ \\ / _` / __| __/ _ \\ '__| ||" << endl;
-cout << "▓▓   ██╬╬╬▀ ▄███████████████_╙╬╬╬╬█_  ╫▓||  | | (_| \\__ \\   <| | | | | | (_| \\__ \\ ||  __/ |    ||" << endl;
-cout << "▓   ▓███╬ ╓▓╬╬████████████╬╬╬▄ ╠████_  ▓||  \\_/\\__,_|___/_|\\_\\_| |_| |_|\\__,_|___/\\__\\___|_|    ||" << endl;
-cout << "▌  ║████ ▐██╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬██▌ ████▌  ▌||                                                      ||" << endl;
-cout << "▌  ▓███▌ █████╬╬╬╬╬╬╬╬╬╬╬╬█████ ╟████  ▌||                                                      ||" << endl;
-cout << "▌  ████▌ ███████╬╬╬╬╬╬╬╬███████ ▐████  ▌||______                                                ||" << endl;
-cout << "▒  ╟████ ╟███████╬╬╬╬╬╬████████ ▓████  ▐||| ___ \\                                               ||" << endl;
-cout << "▓   ████▌ ▀███████╬╬╬╬████████ ╫████M  ▓||| |_/ / __ ___                                        ||" << endl;
-cout << "▓▌  ╙████▓_╙██████Ñ╬╬╬██████▀,▓████Ñ  ╫▓|||  __/ '__/ _ \\                                       ||" << endl;
-cout << "▓▓▓_  ▓████▓▄ ▀▀███╬╬╣███▀┘▄▓█████Γ  Æ▓▓||| |  | | | (_) |                                      ||" << endl;
-cout << "▓▓▓▓▄  ╙▓█████▓▌▄▄▄╓╓╓▄▄φ▓██████▀  ╓▓▓▓▓||\\_|  |_|  \\___/                                       ||" << endl;
-cout << "▓▓▓▓▓▓▄  `▀▓███████╬╬╬███████▀   ╓▓▓▓▓▓▓\\========================================================/" << endl;
-// Displays the current system date
-cout << "Current Date: " << TodoItem::getCurrentDate() << "\n"<< endl;
+    cout << "\n▓▓▓▓▓▓▓▓▓▓▓▓▓▀╙ `      ` ╙▀▀▓▓▓▓▓▓▓▓▓▓▓▓/========================================================\\" << endl;
+    cout << "▓▓▓▓▓▓▓▓▓▀`   _,▄▄▄▄▄▄▄▄╓_   `╙▀▓▓▓▓▓▓▓▓|| _____         _                        _             ||" << endl;
+    cout << "▓▓▓▓▓▓▀   ,▄▓██████████████▓▄▄   ╙▓▓▓▓▓▓|||_   _|       | |                      | |            ||" << endl;
+    cout << "▓▓▓▓▀   ▄▓██████▀▀▀╙╙▀▀▀▓██████▌_  ╙▓▓▓▓||  | | __ _ ___| | ___ __ ___   __ _ ___| |_ ___ _ __  ||" << endl;
+    cout << "▓▓▓`  ▄█████▀└,▄████████▄▄└▀█████▌   ▓▓▓||  | |/ _` / __| |/ / '_ ` _ \\ / _` / __| __/ _ \\ '__| ||" << endl;
+    cout << "▓▓   ██╬╬╬▀ ▄███████████████_╙╬╬╬╬█_  ╫▓||  | | (_| \\__ \\   <| | | | | | (_| \\__ \\ ||  __/ |    ||" << endl;
+    cout << "▓   ▓███╬ ╓▓╬╬████████████╬╬╬▄ ╠████_  ▓||  \\_/\\__,_|___/_|\\_\\_| |_| |_|\\__,_|___/\\__\\___|_|    ||" << endl;
+    cout << "▌  ║████ ▐██╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬██▌ ████▌  ▌||                                                      ||" << endl;
+    cout << "▌  ▓███▌ █████╬╬╬╬╬╬╬╬╬╬╬╬█████ ╟████  ▌||                                                      ||" << endl;
+    cout << "▌  ████▌ ███████╬╬╬╬╬╬╬╬███████ ▐████  ▌||______                                                ||" << endl;
+    cout << "▒  ╟████ ╟███████╬╬╬╬╬╬████████ ▓████  ▐||| ___ \\                                               ||" << endl;
+    cout << "▓   ████▌ ▀███████╬╬╬╬████████ ╫████M  ▓||| |_/ / __ ___                                        ||" << endl;
+    cout << "▓▌  ╙████▓_╙██████Ñ╬╬╬██████▀,▓████Ñ  ╫▓|||  __/ '__/ _ \\                                       ||" << endl;
+    cout << "▓▓▓_  ▓████▓▄ ▀▀███╬╬╣███▀┘▄▓█████Γ  Æ▓▓||| |  | | | (_) |                                      ||" << endl;
+    cout << "▓▓▓▓▄  ╙▓█████▓▌▄▄▄╓╓╓▄▄φ▓██████▀  ╓▓▓▓▓||\\_|  |_|  \\___/                                       ||" << endl;
+    cout << "▓▓▓▓▓▓▄  `▀▓███████╬╬╬███████▀   ╓▓▓▓▓▓▓\\========================================================/" << endl;
+    // Displays the current system date
+    cout << "Current Date: " << TaskItem::getCurrentDate() << endl;
 }
   
 // Function to get user input for main menu
